@@ -1,0 +1,97 @@
+<!DOCTYPE html >
+
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-route/1.8.3/angular-route.min.js"></script>
+    
+</head>
+<body  ng-controller="mycontroller">
+   <a href ="#!home"> <button ng-click="showpage()"> one </button> </a>
+   <a href ="#!aswin">  <button ng-click="showmessage()"> two </button> </a>
+    <h1 ng-style="{'color':'red'}">{{message}}</h1>
+   
+
+
+
+    <a href="#!bhava"> bhava</a>
+    <a href="#!arul"> arul </a>
+
+    
+    <div ng-view></div>
+</body>
+<script>
+var app = angular.module("myApp", ["ngRoute"]);
+
+app.config(function($routeProvider){
+$routeProvider.when("/home",{
+    template : ` <div >
+    Name: <input type="text"  ng-model="user">
+    <h1> Welcome , {{user}} </h1>    
+    <h2> {{5+5 }}</h2>
+    <h3 ng-bind="user" ng-hide=""></h3>
+     <h1 ng-repeat = "s in user" ng-style="{'color' : 'red'}"> Welcome , {{s}} </h1> 
+     <img ng-src="Screenshot 2026-03-26 093346.png">
+     <button ng-click="count=count+1"> {{count}}</button>
+     <my-directive></my-directive>
+     <h2>{{100 }}</h2>
+     <bhavanithi></bhavanithi>
+    </div>`,
+    controller:"mycontroller"
+})
+.otherwise({
+    template:"<h1> Failed </h2>"
+});
+
+});
+
+app.config(function($routeProvider){
+$routeProvider
+.when("/bhava" ,{
+    template:`<h1> bhava </h1>`
+},
+
+)
+.when("/arul" , {
+    template :`<h2> arul </h2>`
+}
+)
+.otherwise({
+template:`<h1>aswin</h1>`
+
+});
+});
+
+app.controller("mycontroller" , function($scope){
+ // ng-show="showcontent"
+    // $scope.showcontent = true;
+    // $scope.message = "";
+
+    // $scope.showpage = function(){
+    //     $scope.showcontent = true;
+
+    // } 
+    // $scope.showmessage = function(){
+    // $scope.showcontent = false;
+    // $scope.message = " Info Hidden";
+    // }
+
+
+});
+
+app.directive("myDirective", function() {
+    return {
+        template: "<h2>Hello Aswin 👋</h2>"
+    };
+});
+  app.directive("bhavanithi" , function(){
+        return {
+            template:"<h1>Heelo bhavanithi</h1>"
+        };
+    });
+</script>
+</html>

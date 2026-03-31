@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RSA Algorithm Demo</title>
+    <style>
+        body {
+            font-weight:bold;
+            background-color:aquamarine;
+            font-family: Arial;
+            text-align: center;
+            margin-top: 40px;
+        }
+        input {
+            background-color:rgb(237, 255, 192);
+            margin: 5px;
+            padding: 5px;
+        }
+        button {
+            font-weight:italic;
+            padding: 6px 10px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>RSA Algorithm Implementation</h2>
+
+<h3>Key Generation</h3>
+Enter Prime p: <input type="number" id="p"><br>
+Enter Prime q: <input type="number" id="q"><br>
+<button onclick="generateKeys()">Generate Keys</button>
+
+<p id="keys"></p>
+
+<hr>
+
+<h3>Encryption</h3>
+Enter Number Message: <input type="number" id="message"><br>
+<button onclick="encrypt()">Encrypt</button>
+
+<p id="encrypted"></p>
+
+<hr>
+
+<h3>Decryption</h3>
+<button onclick="decrypt()">Decrypt</button>
+
+<p id="decrypted"></p>
+
+<script>
+
+let n, phi, e, d, encryptedValue;
+
+// Function to calculate GCD
+function gcd(a, b) {
+    while (b != 0) {
+        let temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+}
+
+// Function to find modular inverse
+function modInverse(e, phi) {
+    for (let i = 1; i < phi; i++) {
+        if ((e * i) % phi == 1)
+            return i;
+    }
+    return 1;
+}
+
+// Power Mod Function
+function powerMod(base, exp, mod) {
+    let result = 1;
+    base = base % mod;
+    while (exp > 0) {
+        if (exp % 2 == 1)
+            result = (result * base) % mod;
+        exp = Math.floor(exp / 2);
+        base = (base * base) % mod;
+    }
+    return result;
+}
+
+function generateKeys() {
+    let p = parseInt(document.getElementById("p").value);
+    let q = parseInt(document.getElementById("q").value);
+
+    n = p * q;
+    phi = (p - 1) * (q - 1);
+
+    // Choose e
+    for (e = 2; e < phi; e++) {
+        if (gcd(e, phi) == 1)
+            break;
+    }
+
+    d = modInverse(e, phi);
+
+    document.getElementById("keys").innerHTML =
+        "Public Key (e, n): (" + e + ", " + n + ")<br>" +
+        "Private Key (d, n): (" + d + ", " + n + ")";
+}
+
+function encrypt() {
+    let message = parseInt(document.getElementById("message").value);
+    encryptedValue = powerMod(message, e, n);
+
+    document.getElementById("encrypted").innerHTML =
+        "Encrypted Message: " + encryptedValue;
+}
+
+function decrypt() {
+    let decryptedValue = powerMod(encryptedValue, d, n);
+
+    document.getElementById("decrypted").innerHTML =
+        "Decrypted Message: " + decryptedValue;
+}
+
+</script>
+
+</body>
+</html>
